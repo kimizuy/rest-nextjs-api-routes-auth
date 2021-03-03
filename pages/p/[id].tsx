@@ -9,7 +9,7 @@ import { useSession } from "next-auth/client";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const post = await prisma.post.findOne({
+  const post = await prisma.post.findUnique({
     where: {
       id: Number(params?.id) || -1,
     },
@@ -28,14 +28,14 @@ async function publishPost(id: number): Promise<void> {
   await fetch(`http://localhost:3000/api/publish/${id}`, {
     method: "PUT",
   });
-  await Router.push("/");
+  await Router.push("/")
 }
 
 async function deletePost(id: number): Promise<void> {
   await fetch(`http://localhost:3000/api/post/${id}`, {
     method: "DELETE",
   });
-  Router.push("/");
+  await Router.push("/")
 }
 
 const Post: React.FC<PostProps> = (props) => {
